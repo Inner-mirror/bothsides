@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>喜恶同因测试｜你被什么吸引，就被什么所伤</title>
+<style>
+  :root{
+    --ink:#2b2521;
+    --ink-2:#5c524a;
+    --muted:#9a8f85;
+    --line:#efe7e0;
+    --paper:#fffdfb;
+    --bg:#f6f1ec;
+    --accent:#c96a4a;
+    --accent-2:#e8b48f;
+    --accent-soft:#fdf1ea;
+    --radius:22px;
+    --shadow:0 12px 40px rgba(120,95,75,.10);
+    --shadow-soft:0 4px 18px rgba(120,95,75,.07);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #fdf6f0 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 100%, #f6eee8 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.7;
+  }
+  .app{max-width:720px;margin:0 auto;padding:22px 18px 70px;}
+
+  /* ---------- 卡片 ---------- */
+  .card{
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:28px 24px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+    border:1px solid rgba(255,255,255,.9);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.6),transparent 30%);
+    pointer-events:none;
+  }
+  .card > *{position:relative;}
+
+  /* ---------- 标题 ---------- */
+  h1{
+    font-size:28px;
+    line-height:1.35;
+    margin:0 0 14px;
+    letter-spacing:-.6px;
+    font-weight:800;
+  }
+  h1 .grad{
+    background:linear-gradient(120deg,#c96a4a,#e8a07a 60%,#b8563a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h2{margin:0 0 14px;font-size:20px;letter-spacing:-.3px;}
+  h3{margin:26px 0 12px;font-size:16px;letter-spacing:-.2px;color:var(--ink);}
+  p{margin:9px 0;color:var(--ink-2);}
+  .lead{font-size:16.5px;color:var(--ink);font-weight:600;}
+  .muted{color:var(--muted);font-size:13px;}
+
+  /* ---------- 首屏装饰 ---------- */
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--accent-soft);
+    color:#b8563a;
+    font-size:12.5px;font-weight:700;
+    padding:6px 14px;border-radius:999px;
+    margin-bottom:16px;
+    letter-spacing:.3px;
+  }
+  .hero-badge::before{
+    content:"";width:7px;height:7px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 3px rgba(201,106,74,.18);
+  }
+  .hero-visual{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin:22px 0 20px;
+    padding:20px 10px;
+    background:linear-gradient(135deg,#fdf3ec,#faf0e9);
+    border-radius:18px;
+  }
+  .mirror{
+    width:74px;height:74px;border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, #ffffff 0%, #f3e4d8 55%, #e2c8b4 100%);
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.85), 0 6px 18px rgba(180,140,110,.22);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    flex-shrink:0;
+  }
+  .hero-arrow{color:#d9bfa9;font-size:22px;font-weight:300;}
+  .hero-caption{
+    text-align:center;font-size:13px;color:var(--muted);
+    margin-top:-8px;letter-spacing:.3px;
+  }
+
+  /* ---------- 提示框 ---------- */
+  .notice{
+    background:linear-gradient(135deg,#fbf7f3,#f8f2ec);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:12.8px;
+    color:var(--muted);
+    line-height:1.75;
+    margin:18px 0 4px;
+  }
+  .notice b{color:var(--ink-2);font-weight:700;}
+
+  /* ---------- 按钮 ---------- */
+  button{
+    appearance:none;border:0;cursor:pointer;
+    font-family:inherit;font-size:16px;font-weight:700;
+    width:100%;
+    padding:16px 22px;
+    border-radius:999px;
+    margin-top:18px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    letter-spacing:.3px;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,#c96a4a,#b8563a);
+    color:#fff;
+    box-shadow:0 10px 24px rgba(184,86,58,.28);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(184,86,58,.34);}
+  .btn-primary:active{transform:translateY(0);}
+  .btn-ghost{
+    background:#fff;
+    color:var(--ink);
+    border:1.5px solid var(--line);
+    box-shadow:var(--shadow-soft);
+  }
+  .btn-ghost:hover{background:#fbf7f3;transform:translateY(-1px);}
+
+  /* ---------- 题目 ---------- */
+  .q{
+    padding:20px 0;
+    border-bottom:1px dashed var(--line);
+    animation:fadeUp .45s ease both;
+  }
+  .q:last-child{border-bottom:0;}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .q p.qt{
+    font-weight:700;margin:0 0 13px;font-size:15.5px;
+    color:var(--ink);line-height:1.6;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .q .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:24px;height:24px;border-radius:8px;
+    background:var(--accent-soft);color:#b8563a;
+    font-size:12.5px;font-weight:800;
+    flex-shrink:0;margin-top:1px;
+  }
+  label{
+    display:flex;align-items:center;gap:10px;
+    padding:13px 15px;
+    background:#fcf9f6;
+    border:1.5px solid transparent;
+    border-radius:13px;
+    margin:9px 0;
+    font-size:14.8px;
+    color:var(--ink-2);
+    cursor:pointer;
+    transition:all .18s ease;
+    line-height:1.5;
+  }
+  label:hover{background:#f8f2ec;border-color:#ecdfd4;}
+  label:has(input:checked){
+    background:var(--accent-soft);
+    border-color:var(--accent);
+    color:var(--ink);
+    font-weight:600;
+    box-shadow:0 4px 14px rgba(201,106,74,.14);
+  }
+  input[type=radio]{
+    appearance:none;
+    width:17px;height:17px;border-radius:50%;
+    border:2px solid #d9c9bb;
+    margin:0;flex-shrink:0;
+    transition:all .15s ease;
+    position:relative;
+  }
+  input[type=radio]:checked{
+    border-color:var(--accent);
+    background:var(--accent);
+    box-shadow:inset 0 0 0 3px #fff;
+  }
+
+  /* ---------- 进度 ---------- */
+  .progress{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,253,251,.92);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    padding:14px 0 12px;
+    margin:-28px -24px 6px;
+    border-bottom:1px solid rgba(239,231,224,.7);
+  }
+  .progress-inner{padding:0 24px;}
+  .progress-top{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12.5px;color:var(--muted);font-weight:600;
+    margin-bottom:8px;letter-spacing:.3px;
+  }
+  .progress-top .pct{color:var(--accent);font-weight:800;}
+  .track{
+    height:7px;background:#f0e7df;border-radius:999px;overflow:hidden;
+  }
+  .track i{
+    display:block;height:100%;width:0;
+    background:linear-gradient(90deg,#e8a07a,#c96a4a);
+    border-radius:999px;
+    transition:width .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ---------- 结果 ---------- */
+  .hidden{display:none!important;}
+
+  .type-tag{
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--ink);color:#fff;
+    border-radius:999px;padding:6px 15px;
+    font-size:12.5px;font-weight:700;letter-spacing:.5px;
+    margin-bottom:14px;
+  }
+  .result-title{
+    font-size:30px;line-height:1.28;margin:4px 0 18px;
+    font-weight:800;letter-spacing:-.8px;
+    background:linear-gradient(120deg,#2b2521,#8a6a52);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  .compare{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:10px;
+    align-items:stretch;margin:18px 0;
+  }
+  .compare .side{
+    background:linear-gradient(160deg,#fdf8f4,#faf1e9);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px 14px;
+    font-size:14px;color:var(--ink-2);line-height:1.6;
+    text-align:center;
+  }
+  .compare .side b{
+    display:block;font-size:11.5px;color:var(--muted);
+    font-weight:700;margin-bottom:6px;letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+  .compare .side.front{background:linear-gradient(160deg,#fdf8f4,#f8ece1);}
+  .compare .side.back{background:linear-gradient(160deg,#f2ece7,#eadfd5);}
+  .compare .arrow{
+    display:flex;align-items:center;justify-content:center;
+    color:#c9ab93;font-size:20px;
+  }
+
+  .box{
+    background:#fcf9f6;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .box.dark{
+    background:linear-gradient(150deg,#332c27,#241f1b);
+    color:#f5ece4;
+    border:0;
+    box-shadow:0 14px 34px rgba(45,36,30,.22);
+  }
+  .box.dark p{color:#e8dcd2;}
+  .box.dark .muted{color:#a89a8e;}
+  .box h4{
+    margin:0 0 8px;font-size:13px;font-weight:800;
+    letter-spacing:.6px;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .box.dark h4{color:#c9b8a9;}
+  .box h4:not(:first-child){margin-top:18px;}
+
+  .bar{
+    display:grid;grid-template-columns:96px 1fr 44px;
+    gap:11px;align-items:center;
+    margin:11px 0;font-size:13.5px;color:var(--ink-2);
+  }
+  .bar .track{height:9px;}
+  .bar b{text-align:right;font-weight:800;color:var(--ink);font-size:13px;}
+
+  .pill{
+    display:inline-block;
+    background:#faf1e9;color:#a8563a;
+    border:1px solid #f0dfd0;
+    border-radius:999px;padding:6px 14px;
+    font-size:13px;font-weight:700;
+    margin:4px 6px 4px 0;
+  }
+
+  .footer-note{
+    text-align:center;color:#b8aca1;font-size:11.8px;
+    padding:14px 0 0;line-height:1.8;letter-spacing:.2px;
+  }
+  .footer-note .brand{
+    display:block;margin-top:6px;
+    color:#a89a8e;font-weight:700;letter-spacing:1px;font-size:11px;
+  }
+
+  @media (max-width:560px){
+    .app{padding:16px 14px 60px;}
+    .card{padding:24px 18px;border-radius:20px;}
+    h1{font-size:24px;}
+    .result-title{font-size:25px;}
+    .progress{margin:-24px -18px 6px;}
+    .progress-inner{padding:0 18px;}
+    .compare{grid-template-columns:1fr;gap:8px;}
+    .compare .arrow{transform:rotate(90deg);padding:2px 0;}
+    .bar{grid-template-columns:80px 1fr 40px;font-size:12.8px;}
+    .mirror{width:62px;height:62px;font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ 首屏 ============ -->
+  <div id="intro" class="card">
+    <span class="hero-badge">喜恶同因 · 自我觉察</span>
+    <h1>你被什么吸引，<br><span class="grad">就被什么所伤。</span></h1>
+    <p class="lead">同一个特质，你看见的是优点，<br>伤到你的是它的背面。</p>
+
+    <div class="hero-visual">
+      <div class="mirror">🌗</div>
+      <div class="hero-arrow">→</div>
+      <div class="mirror">🌑</div>
+    </div>
+    <p class="hero-caption">不是他变了，是你一开始只看了正面</p>
+
+    <p style="margin-top:18px;">32题 · 约5分钟 · 覆盖恋爱 / 友情 / 家人 / 同事 · 12种结果</p>
+
+    <div class="notice">
+      <b>仅供娱乐声明：</b>本测试仅用于娱乐与自我觉察参考，不构成心理诊断、咨询或专业建议。结果没有好坏对错，请勿据此给自己或他人贴标签。如你正经历持续的情绪困扰，建议寻求专业心理支持。
+    </div>
+
+    <button class="btn-primary" onclick="startTest()">开始测试 →</button>
+    <p class="footer-note">MirrorLab<span class="brand">照见你没说出口的那部分</span></p>
+  </div>
+
+  <!-- ============ 答题 ============ -->
+  <div id="quiz" class="card hidden">
+    <div class="progress" id="progress">
+      <div class="progress-inner">
+        <div class="progress-top">
+          <span id="progressText">已答 0 / 32</span>
+          <span class="pct" id="progressPct">0%</span>
+        </div>
+        <div class="track"><i id="progressBar"></i></div>
+      </div>
+    </div>
+    <form id="quizForm"></form>
+    <button class="btn-primary" onclick="submitTest()">提交并查看结果</button>
+    <p class="footer-note">请凭第一反应作答，不要选“我应该怎样”。</p>
+  </div>
+
+  <!-- ============ 结果 ============ -->
+  <div id="result" class="card hidden">
+    <div id="resultMain"></div>
+    <div id="fullReport"></div>
+    <button class="btn-ghost" onclick="copyShare()">复制分享文案</button>
+    <button class="btn-ghost" onclick="restart()">重新测试</button>
+    <p class="footer-note">
+      本测试仅供娱乐与自我觉察参考，不构成心理诊断或专业建议。<br>
+      MirrorLab<span class="brand">照见你没说出口的那部分</span>
+    </p>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   12 种喜恶同因类型
+   ========================================================= */
+const TYPES = {
+  "自信陷阱型": {
+    attract:"自信、有主见、气场稳",
+    backside:"傲慢、听不进话、习惯压人一头",
+    wound:"你被他的笃定吸引，后来发现他从不觉得你会对。你的声音越来越小，最后连自己都开始怀疑自己。",
+    fear:"“你想多了”“听我的就对了”。",
+    crack:"分清自信和自大。自信的人敢做决定，也敢听你说；自大的人只允许自己对。"
+  },
+  "温柔陷阱型": {
+    attract:"温柔、体贴、什么都顺着你",
+    backside:"讨好、回避冲突、没有边界",
+    wound:"你以为他脾气好，后来发现他从不表达真实想法。你永远猜不到他要什么，最后累的是你，他还觉得你变了。",
+    fear:"“都听你的”“你决定就好”。",
+    crack:"温柔有两种：因为尊重你，和因为害怕冲突。前者会沟通，后者只会顺从然后积怨。"
+  },
+  "独立陷阱型": {
+    attract:"独立、不粘人、有自己的世界",
+    backside:"冷漠、不需要你、情感不参与",
+    wound:"你喜欢他不黏人，后来发现他什么都能自己扛，也不需要你。你像他生活里的外人，走不近，也留不下。",
+    fear:"“我自己可以”“不用麻烦你”。",
+    crack:"独立和疏离只差一步。健康的独立是能照顾好自己，也愿意让你进入；疏离是永远给你留着门，但不让你进来。"
+  },
+  "幽默陷阱型": {
+    attract:"幽默、有趣、跟他在一起很开心",
+    backside:"逃避认真、什么都能开玩笑",
+    wound:"你被他逗笑，后来发现每次你想认真谈，他都用玩笑滑过去。你的认真被消解，你的情绪没有落点。",
+    fear:"“别那么认真嘛”“开个玩笑而已”。",
+    crack:"幽默可以是润滑剂，也可以是回避器。看他能不能在该认真的时候认真。"
+  },
+  "野心陷阱型": {
+    attract:"有目标、上进、有野心",
+    backside:"永远工作优先、你排第二",
+    wound:"你欣赏他有追求，后来发现你永远在等。等他忙完，等他有空，等他把你放进计划。你一直在等一个“以后”。",
+    fear:"“等我忙完这阵”“以后有的是时间”。",
+    crack:"有野心不是问题，问题是他有没有把你写进优先级。不是要你排第一，是要你别永远排最后。"
+  },
+  "细心陷阱型": {
+    attract:"细心、什么都替你想好",
+    backside:"控制、越界、什么都要管",
+    wound:"你享受被照顾，后来发现你穿什么、见谁、几点睡，他都要过问。你越来越窒息，却说不出哪里不对。",
+    fear:"“我这是关心你”“我都是为你好”。",
+    crack:"照顾和控制的区别是：照顾是你要什么他给什么，控制是他觉得你该要什么。"
+  },
+  "理性陷阱型": {
+    attract:"理性、遇事冷静、不情绪化",
+    backside:"共情差、只会讲道理",
+    wound:"你喜欢他稳，后来发现你难过时他只会分析对错。你的情绪永远接不住，像对着一堵墙说话。",
+    fear:"“这有什么好难过的”“你冷静一点”。",
+    crack:"理性不是没情绪，是能接住情绪之后再讲道理。只会讲道理的，是在回避情绪。"
+  },
+  "浪漫陷阱型": {
+    attract:"浪漫、会制造惊喜",
+    backside:"不落地、不稳定、活在感觉里",
+    wound:"你被浪漫击中，后来发现日子不是靠惊喜过的。他给得起心动，给不起稳定。惊喜之后，是更长的空。",
+    fear:"“感觉对了就行”“别那么现实”。",
+    crack:"浪漫是加分项，不是地基。看他除了会说，会不会做。"
+  },
+  "顾家陷阱型": {
+    attract:"顾家、孝顺、重视家庭",
+    backside:"没主见、听家里的、你排后面",
+    wound:"你欣赏他有家庭观念，后来发现他什么都听家里的。你永远排在原生家庭后面，冲突时没人替你说话。",
+    fear:"“那是我家人”“你就忍一忍”。",
+    crack:"孝顺和妈宝的区别是：孝顺有边界，妈宝没有。看他在你和他家人冲突时，站不站得出来。"
+  },
+  "真诚陷阱型": {
+    attract:"真诚、直来直去、不玩心眼",
+    backside:"口无遮拦、不顾感受",
+    wound:"你喜欢他直，后来发现他什么都直说。你的感受永远被一句“我说话直”带过，有苦说不出。",
+    fear:"“我说话直，你别介意”。",
+    crack:"真诚和没分寸是两回事。真诚的人会在意你的感受，没分寸的人只在意自己说爽了没。"
+  },
+  "大方陷阱型": {
+    attract:"大方、仗义、舍得付出",
+    backside:"没边界、对谁都好、你不特殊",
+    wound:"你喜欢他大方，后来发现他对谁都大方，你只是其中之一。你不是被偏爱，你是被平均。",
+    fear:"“我对谁都这样”“你别多想”。",
+    crack:"大方和没有边界是两回事。看他对别人和对你的区别，那才是你在不在他心里的证据。"
+  },
+  "稳定陷阱型": {
+    attract:"稳定、可靠、踏实",
+    backside:"无趣、拒绝变化、日子像死水",
+    wound:"你要的是安稳，后来发现安稳变成了没有波澜。你想要的惊喜、成长、新鲜，他一样都给不了。",
+    fear:"“现在这样不是挺好吗”“折腾什么”。",
+    crack:"稳定不等于停滞。健康的稳定是让你安心，不健康的稳定是让你认命。"
+  }
+};
+
+const TYPE_KEYS = Object.keys(TYPES);
+
+/* =========================================================
+   题库：四层，layer 标记
+   ========================================================= */
+const QUESTION_POOL = [
+
+  /* ---------- 吸引力层：12题，每类型1题，必出 ---------- */
+  { layer:"attract", t:"自信陷阱型", q:"你更容易被哪种人吸引？", opts:[
+    ["说话有底气，做决定不犹豫的人",3],["温和好说话，什么都愿意商量的人",0],["什么都自己搞定，不麻烦别人的人",0],["经常逗你笑的人",0]
+  ]},
+  { layer:"attract", t:"温柔陷阱型", q:"刚认识时，哪种特质最容易让你有好感？", opts:[
+    ["特别体贴，你随口说的他都记得",3],["很有主见，气场很强",0],["很理性，说话有条理",0],["很浪漫，会制造小惊喜",0]
+  ]},
+  { layer:"attract", t:"独立陷阱型", q:"你更欣赏哪种相处状态？", opts:[
+    ["各忙各的，不互相打扰",3],["天天黏在一起，什么都说",0],["一起规划未来，步调一致",0],["一起玩，开心最重要",0]
+  ]},
+  { layer:"attract", t:"幽默陷阱型", q:"哪种人让你觉得“跟他在一起真轻松”？", opts:[
+    ["随时随地能接住梗的人",3],["特别靠谱，说到做到的人",0],["很细心，什么都替你想好",0],["很真诚，从不绕弯子",0]
+  ]},
+  { layer:"attract", t:"野心陷阱型", q:"你更容易对哪种人心动？", opts:[
+    ["有明确目标，一直在往上走的人",3],["安安静静，日子过得稳的人",0],["很会照顾人，让人安心的人",0],["很直率，想到什么说什么的人",0]
+  ]},
+  { layer:"attract", t:"细心陷阱型", q:"哪种细节最容易打动你？", opts:[
+    ["他记得你的口味、你的习惯、你的小情绪",3],["他很有想法，能带你见世面",0],["他很独立，从不给你添麻烦",0],["他很大方，对你舍得",0]
+  ]},
+  { layer:"attract", t:"理性陷阱型", q:"吵架时，你更希望对方？", opts:[
+    ["冷静分析，讲清楚谁对谁错",3],["先哄你，情绪过了再说",0],["直接沉默，各自消化",0],["开玩笑把气氛缓和过去",0]
+  ]},
+  { layer:"attract", t:"浪漫陷阱型", q:"哪种表达最容易让你上头？", opts:[
+    ["突然的惊喜、仪式感、精心准备的浪漫",3],["每天的稳定陪伴",0],["在你需要时理性给建议",0],["对你和对别人明显不一样",0]
+  ]},
+  { layer:"attract", t:"顾家陷阱型", q:"你更看重对方哪一点？", opts:[
+    ["重视家庭，跟家人关系好",3],["有野心，想闯出一片天",0],["有趣，生活不无聊",0],["独立，不依赖任何人",0]
+  ]},
+  { layer:"attract", t:"真诚陷阱型", q:"哪种行为最容易让你觉得“这人靠谱”？", opts:[
+    ["有话直说，从不绕弯子",3],["说话得体，照顾别人感受",0],["情绪稳定，不轻易发火",0],["很有边界，不随便麻烦别人",0]
+  ]},
+  { layer:"attract", t:"大方陷阱型", q:"哪种行为最容易让你觉得“这人不错”？", opts:[
+    ["买单爽快，对朋友仗义",3],["精打细算，把日子过明白",0],["情绪稳定，不轻易发火",0],["很有边界，不随便麻烦别人",0]
+  ]},
+  { layer:"attract", t:"稳定陷阱型", q:"你更想要哪种关系？", opts:[
+    ["平平淡淡，安安稳稳，一直这样就好",3],["充满惊喜和变化，每天不一样",0],["彼此独立，各有各的空间",0],["热烈一点，爱恨都鲜明",0]
+  ]},
+
+  /* ---------- 盲区层：12题，抽8 ---------- */
+  { layer:"blind", t:"自信陷阱型", q:"对方很自信，但从不采纳你的意见，你会？", opts:[
+    ["觉得他有主见，挺好",3],["有点不舒服，但算了",1],["会认真跟他谈这个问题",0],["觉得被压住了，很难受",0]
+  ]},
+  { layer:"blind", t:"温柔陷阱型", q:"对方什么都顺着你，但从不说自己真实想法，你会？", opts:[
+    ["觉得他脾气真好，很省心",3],["偶尔觉得不真实",1],["会主动问他到底怎么想",0],["会不安，觉得关系缺了点什么",0]
+  ]},
+  { layer:"blind", t:"独立陷阱型", q:"对方什么都自己扛，从不向你求助，你会？", opts:[
+    ["觉得他成熟，不添麻烦",3],["有点失落，但理解",1],["会主动靠近，想知道他的事",0],["会觉得自己不被需要",0]
+  ]},
+  { layer:"blind", t:"幽默陷阱型", q:"你想认真谈一件事，对方却一直开玩笑，你会？", opts:[
+    ["觉得他性格好，不较真",3],["有点无奈，但算了",1],["会严肃地说“我在认真跟你讲”",0],["会觉得被敷衍，很受伤",0]
+  ]},
+  { layer:"blind", t:"野心陷阱型", q:"对方又一次因为工作取消你们的计划，你会？", opts:[
+    ["理解，事业重要",3],["有点失落，但不说",1],["会表达自己的感受",0],["会觉得永远排不上，很累",0]
+  ]},
+  { layer:"blind", t:"细心陷阱型", q:"对方开始过问你的穿着、行程、交友，你会？", opts:[
+    ["觉得他在乎我，挺甜",3],["有点不自在，但忍着",1],["会明确说这是我的事",0],["会觉得被控制，想逃",0]
+  ]},
+  { layer:"blind", t:"理性陷阱型", q:"你难过时，对方给你列了三条解决方案，你会？", opts:[
+    ["觉得他很靠谱，能解决问题",3],["有点空落，但接受",1],["会告诉他“我现在只想被安慰”",0],["会觉得情绪完全没被接住",0]
+  ]},
+  { layer:"blind", t:"浪漫陷阱型", q:"对方很会制造惊喜，但日常安排一团乱，你会？", opts:[
+    ["觉得浪漫就够了",3],["有点担心，但不说",1],["会跟他一起把日子理清楚",0],["会觉得不踏实，没安全感",0]
+  ]},
+  { layer:"blind", t:"顾家陷阱型", q:"对方家里提出不合理要求，他让你忍一忍，你会？", opts:[
+    ["觉得他孝顺，能理解",3],["委屈，但忍了",1],["会要求他站出来沟通",0],["会觉得他根本没把你当自己人",0]
+  ]},
+  { layer:"blind", t:"真诚陷阱型", q:"对方当众说了一句让你难堪的“实话”，你会？", opts:[
+    ["觉得他直，不装",3],["尴尬，但笑笑过去",1],["会私下告诉他我的感受",0],["会觉得被刺伤，很在意",0]
+  ]},
+  { layer:"blind", t:"大方陷阱型", q:"对方对所有人都很大方、很热情，你会？", opts:[
+    ["觉得他人好，人缘好",3],["有点不是滋味，但不说",1],["会观察他对我有没有不一样",0],["会觉得自己不特殊，很失落",0]
+  ]},
+  { layer:"blind", t:"稳定陷阱型", q:"对方每天重复同样的生活，拒绝任何变化，你会？", opts:[
+    ["觉得安稳，挺好",3],["偶尔觉得无聊，但能忍",1],["会主动提议一起尝试新东西",0],["会觉得日子像一潭死水",0]
+  ]},
+
+  /* ---------- 受伤层：12题，抽6 ---------- */
+  { layer:"wound", t:"自信陷阱型", q:"在关系里，哪种时刻最让你难受？", opts:[
+    ["对方总觉得自己对，你的想法不被当回事",3],["对方太黏，你没空间",0],["对方太冷，你走不近",0],["对方太理性，不讲感受",0]
+  ]},
+  { layer:"wound", t:"温柔陷阱型", q:"哪种情况最让你累？", opts:[
+    ["你永远猜不到对方真正想要什么",3],["对方太强势，你说了不算",0],["对方太独立，不需要你",0],["对方太无聊，日子没劲",0]
+  ]},
+  { layer:"wound", t:"独立陷阱型", q:"哪种感受最让你心凉？", opts:[
+    ["你在他生活里像可有可无的人",3],["对方什么都管，你喘不过气",0],["对方总在画饼，做不到",0],["对方太直，说话伤人",0]
+  ]},
+  { layer:"wound", t:"幽默陷阱型", q:"哪种情况最让你无力？", opts:[
+    ["你想认真谈，对方永远在打岔",3],["对方太稳定，日子没变化",0],["对方太顾家，顾不上你",0],["对方太大方，你不特殊",0]
+  ]},
+  { layer:"wound", t:"野心陷阱型", q:"哪种时刻最让你委屈？", opts:[
+    ["你永远在等，永远排在他计划后面",3],["对方太温柔，没主见",0],["对方太独立，不需要你",0],["对方太浪漫，不落地",0]
+  ]},
+  { layer:"wound", t:"细心陷阱型", q:"哪种感受最让你窒息？", opts:[
+    ["你穿什么、见谁、几点睡都要被安排",3],["对方太冷，不关心你",0],["对方太理性，只讲道理",0],["对方太独立，不让你靠近",0]
+  ]},
+  { layer:"wound", t:"理性陷阱型", q:"哪种情况最让你孤独？", opts:[
+    ["你难过时，对方只会分析对错",3],["对方太黏人，你没空间",0],["对方太浪漫，不实际",0],["对方太顾家，顾不上你",0]
+  ]},
+  { layer:"wound", t:"浪漫陷阱型", q:"哪种落差最让你失望？", opts:[
+    ["心动很多，稳定很少，日子过不踏实",3],["对方太稳，日子没惊喜",0],["对方太独立，不需要你",0],["对方太顾家，听家里的",0]
+  ]},
+  { layer:"wound", t:"顾家陷阱型", q:"哪种时刻最让你心寒？", opts:[
+    ["你和他家人冲突时，他不站你这边",3],["对方太野，不顾家",0],["对方太理性，不讲感情",0],["对方太大方，对谁都好",0]
+  ]},
+  { layer:"wound", t:"真诚陷阱型", q:"哪种话最让你受伤？", opts:[
+    ["“我说话直，你别介意”",3],["“随便你”“你要这么想我也没办法”",0],["“以后再说”“下次一定”",0],["“我们只是朋友”“你别多想”",0]
+  ]},
+  { layer:"wound", t:"大方陷阱型", q:"哪种感受最让你失落？", opts:[
+    ["他对谁都好，你并不特殊",3],["他太理性，不表达感情",0],["他太稳定，日子没劲",0],["他太顾家，顾不上你",0]
+  ]},
+  { layer:"wound", t:"稳定陷阱型", q:"哪种状态最让你不甘心？", opts:[
+    ["日子安稳，但一眼望到头，没有成长",3],["对方太折腾，永远不安定",0],["对方太控制，你没自由",0],["对方太冷，你走不近",0]
+  ]},
+
+  /* ---------- 觉察层：12题，抽6 ---------- */
+  { layer:"aware", t:"自信陷阱型", q:"如果对方说“我这是自信，不是傲慢”，你会？", opts:[
+    ["觉得有道理，是我多想了",0],["有点怀疑，但接受",1],["会观察他是不是听得进不同意见",2],["会明确告诉他，自信和傲慢的区别在哪",3]
+  ]},
+  { layer:"aware", t:"温柔陷阱型", q:"如果对方说“我什么都听你的，你还想怎样”，你会？", opts:[
+    ["觉得是自己要求太多",0],["有点委屈，但算了",1],["会告诉他，我要的是你的真实想法",2],["会意识到，顺从不是亲密",3]
+  ]},
+  { layer:"aware", t:"独立陷阱型", q:"如果对方说“我不需要你，是因为我很独立”，你会？", opts:[
+    ["觉得他说得对",0],["有点失落，但接受",1],["会告诉他，被需要也是关系的一部分",2],["会明白，独立和疏离是两回事",3]
+  ]},
+  { layer:"aware", t:"幽默陷阱型", q:"如果对方说“我就是爱开玩笑，你别太认真”，你会？", opts:[
+    ["觉得是自己太敏感",0],["有点无奈，但算了",1],["会告诉他，有些事不能开玩笑",2],["会看清，幽默也可以是一种回避",3]
+  ]},
+  { layer:"aware", t:"野心陷阱型", q:"如果对方说“我这么拼，不都是为了我们”，你会？", opts:[
+    ["觉得感动，理解他",0],["有点复杂，但接受",1],["会告诉他，我要的是现在，不是以后",2],["会明白，未来不能一直透支现在",3]
+  ]},
+  { layer:"aware", t:"细心陷阱型", q:"如果对方说“我这是关心你，不是控制”，你会？", opts:[
+    ["觉得是自己想多了",0],["有点别扭，但接受",1],["会明确划出我的边界",2],["会分清，关心和控制不是一回事",3]
+  ]},
+  { layer:"aware", t:"理性陷阱型", q:"如果对方说“我帮你分析问题，有什么不对”，你会？", opts:[
+    ["觉得他说得对",0],["有点空落，但接受",1],["会告诉他，我先要的是被理解",2],["会明白，讲道理不等于共情",3]
+  ]},
+  { layer:"aware", t:"浪漫陷阱型", q:"如果对方说“生活要有仪式感，别那么现实”，你会？", opts:[
+    ["觉得有道理，跟着感觉走",0],["有点担心，但接受",1],["会告诉他，日子也要落地",2],["会看清，浪漫不能当地基",3]
+  ]},
+  { layer:"aware", t:"顾家陷阱型", q:"如果对方说“那是我家人，你就忍一忍”，你会？", opts:[
+    ["觉得应该体谅",0],["委屈，但忍了",1],["会要求他站出来",2],["会明白，孝顺不等于让你受委屈",3]
+  ]},
+  { layer:"aware", t:"真诚陷阱型", q:"如果对方说“我这人就这样，说话直”，你会？", opts:[
+    ["觉得他真实，不装",0],["有点难受，但接受",1],["会告诉他，直也要有分寸",2],["会明白，真诚不是伤人的借口",3]
+  ]},
+  { layer:"aware", t:"大方陷阱型", q:"如果对方说“我对谁都这样，你别多想”，你会？", opts:[
+    ["觉得自己太计较",0],["有点失落，但接受",1],["会告诉他，我想要的是偏爱",2],["会明白，对谁都好，等于谁都不特殊",3]
+  ]},
+  { layer:"aware", t:"稳定陷阱型", q:"如果对方说“现在这样不是挺好吗，折腾什么”，你会？", opts:[
+    ["觉得有道理，安稳就好",0],["有点不甘，但接受",1],["会主动提议一起改变",2],["会明白，稳定不等于停滞",3]
+  ]}
+];
+
+/* =========================================================
+   抽题与计分
+   ========================================================= */
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pickByLayer(layer, n){
+  return shuffle(QUESTION_POOL.filter(q => q.layer === layer)).slice(0, n);
+}
+function buildQuiz(){
+  return shuffle([
+    ...pickByLayer("attract", 12),
+    ...pickByLayer("blind", 8),
+    ...pickByLayer("wound", 6),
+    ...pickByLayer("aware", 6)
+  ]);
+}
+
+let QUIZ = [];
+let currentResult = null;
+
+/* =========================================================
+   流程
+   ========================================================= */
+function startTest(){
+  QUIZ = buildQuiz();
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuiz();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderQuiz(){
+  const form = document.getElementById("quizForm");
+  form.innerHTML = QUIZ.map((q,i) => `
+    <div class="q">
+      <p class="qt"><span class="num">${i+1}</span>${q.q}</p>
+      ${q.opts.map((o,j) => `
+        <label>
+          <input type="radio" name="q${i}" value="${j}" onchange="updateProgress()">
+          <span>${o[0]}</span>
+        </label>
+      `).join("")}
+    </div>
+  `).join("");
+  updateProgress();
+}
+
+function updateProgress(){
+  const total = QUIZ.length;
+  let done = 0;
+  QUIZ.forEach((q,i) => {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) done++;
+  });
+  const pct = Math.round(done/total*100);
+  document.getElementById("progressText").textContent = `已答 ${done} / ${total}`;
+  document.getElementById("progressPct").textContent = pct + "%";
+  document.getElementById("progressBar").style.width = pct + "%";
+}
+
+function submitTest(){
+  let answered = 0;
+  const answers = [];
+  QUIZ.forEach((q,i) => {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (sel){ answered++; answers.push(Number(sel.value)); }
+    else answers.push(null);
+  });
+  if (answered < QUIZ.length){
+    alert(`还有 ${QUIZ.length - answered} 题没答完，请全部选完再提交。`);
+    return;
+  }
+
+  const typeScore = {};
+  TYPE_KEYS.forEach(k => typeScore[k] = 0);
+  let awareScore=0, awareMax=0, blindScore=0, blindMax=0, woundScore=0, woundMax=0;
+
+  QUIZ.forEach((q,i) => {
+    const val = q.opts[answers[i]][1];
+    if (q.layer === "attract"){
+      typeScore[q.t] += val;
+    } else if (q.layer === "blind"){
+      typeScore[q.t] += (val === 3 ? 2 : val === 1 ? 1 : 0);
+      blindScore += (3 - val); blindMax += 3;
+    } else if (q.layer === "wound"){
+      typeScore[q.t] += val;
+      woundScore += (val === 3 ? 2 : val === 1 ? 1 : 0); woundMax += 2;
+    } else if (q.layer === "aware"){
+      awareScore += val; awareMax += 3;
+    }
+  });
+
+  const sorted = TYPE_KEYS.slice().sort((a,b) => typeScore[b]-typeScore[a]);
+  const topType = sorted[0];
+  const secondType = sorted[1];
+
+  const awarePercent = Math.round(
+    ((awareScore/awareMax)*0.5 + (blindScore/blindMax)*0.3 + (woundScore/woundMax)*0.2) * 100
+  );
+
+  let awareLabel = "";
+  if (awarePercent >= 75) awareLabel = "你已经能看见背面了";
+  else if (awarePercent >= 55) awareLabel = "你在半梦半醒之间";
+  else if (awarePercent >= 30) awareLabel = "你开始有点感觉了";
+  else awareLabel = "你还停留在正面";
+
+  currentResult = { type: topType, second: secondType, scores: typeScore, awarePercent, awareLabel };
+
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  renderResult();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderResult(){
+  const r = currentResult;
+  const info = TYPES[r.type];
+  const sorted = TYPE_KEYS.slice().sort((a,b) => r.scores[b]-r.scores[a]);
+  const maxScore = r.scores[sorted[0]] || 1;
+
+  document.getElementById("resultMain").innerHTML = `
+    <span class="type-tag">✦ 你的喜恶同因类型</span>
+    <div class="result-title">${r.type}</div>
+
+    <div class="compare">
+      <div class="side front"><b>你看见的</b>${info.attract}</div>
+      <div class="arrow">→</div>
+      <div class="side back"><b>你没看见的</b>${info.backside}</div>
+    </div>
+
+    <div class="box dark">
+      <h4>你反复受的伤</h4>
+      <p>${info.wound}</p>
+    </div>
+
+    <div class="box">
+      <h4>你最怕听的话</h4>
+      <p>${info.fear}</p>
+      <h4>破解方式</h4>
+      <p>${info.crack}</p>
+      <p class="muted">不是不再喜欢这类人，而是学会分辨：你看见的是正面，还是全部。</p>
+    </div>
+  `;
+
+  document.getElementById("fullReport").innerHTML = `
+    <h3>你的喜恶同因分布</h3>
+    ${sorted.slice(0,6).map(k => `
+      <div class="bar">
+        <span>${k.replace("陷阱型","")}</span>
+        <div class="track"><i style="width:${(r.scores[k]/maxScore)*100}%"></i></div>
+        <b>${r.scores[k]}</b>
+      </div>
+    `).join("")}
+
+    <h3>你的觉察度</h3>
+    <div class="bar">
+      <span>看见背面</span>
+      <div class="track"><i style="width:${r.awarePercent}%"></i></div>
+      <b>${r.awarePercent}%</b>
+    </div>
+    <p>${r.awareLabel}。觉察度越高，越不容易被同一个背面反复伤到。</p>
+
+    ${r.scores[r.second] > maxScore*0.7 ? `
+      <h3>你可能同时有</h3>
+      <p><span class="pill">${r.type}</span><span class="pill">${r.second}</span></p>
+    ` : ""}
+
+    <h3>这个测试在说什么</h3>
+    <p>你被一个人吸引，往往是因为他身上的某个优点。但优点和缺点是同一个东西，只是在不同场景下，你看见了不同的面。</p>
+    <p>不是他变了，是你一开始只看了正面。</p>
+    <p class="muted">看见背面，不是为了不再爱，而是为了不再反复受同一种伤。</p>
+  `;
+}
+
+function copyShare(){
+  if (!currentResult) return;
+  const text = `我的喜恶同因类型是：${currentResult.type}。我被「${TYPES[currentResult.type].attract}」吸引，也被「${TYPES[currentResult.type].backside}」伤到。你也来测：${location.href}`;
+  if (navigator.clipboard){
+    navigator.clipboard.writeText(text).then(() => alert("分享文案已复制")).catch(() => prompt("复制这段分享文案：", text));
+  } else {
+    prompt("复制这段分享文案：", text);
+  }
+}
+
+function restart(){
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("intro").classList.remove("hidden");
+  document.getElementById("quizForm").innerHTML = "";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
